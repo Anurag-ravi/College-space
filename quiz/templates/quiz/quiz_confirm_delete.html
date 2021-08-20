@@ -1,0 +1,17 @@
+{% extends 'main/basic.html' %} 
+{% block content %}
+<div class="row justify-content-around">
+<div class="border col-6">
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4 p-4">Are you sure to delete "{{ object.title}} of {{object.course}}"</legend>
+    </fieldset>
+    <div class="form-group my-2">
+      <button class="btn btn-danger" type="submit">Yes, Delete it</button>
+      <a class="btn btn-info" href="{% url 'quiz-home'%}">Cancel</a>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock content %}

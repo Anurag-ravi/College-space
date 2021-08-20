@@ -1,0 +1,340 @@
+{% load static %}
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--========== BOX ICONS ==========-->
+        {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"> {% endcomment %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="{% static '/css/main.css' %}">
+
+        <style>
+          {% block css %}{% endblock %}
+        </style>
+        {% if title %}
+            <title>College Space-{{ title }}</title>
+        {% else %}
+            <title>College Space</title>
+        {% endif %}
+    </head>
+     {% comment %} style="background-image: url('{% static "img/background.jpg"%}'); background-size: 100%;background-attachment: fixed;" {% endcomment %}
+    <body id="bg" style="background-image: url('{% static "/img/background1.jpg" %}'); background-size: 100%;background-attachment: fixed;"> 
+        <!--========== HEADER ==========-->
+        <header class="header">
+            <div class="header__container">
+                {% if user.is_authenticated %}
+                  <a class="header__logo align-middle" id="messbar">{{ str }} {{user.profile.name}}! &#128512</a>
+                {% else %}
+                  <a href="{% url 'login' %}" class="header__logo">College Space</a>
+                {% endif %}
+                <!-- <div class="header__search">
+                    <input type="search" placeholder="Search" class="header__input">
+                    <i class='bx bx-search header__icon'></i>
+                </div> -->
+                {% if user.is_authenticated %}
+                  <a target="_blank" href="https://www.iitg.ac.in/"><img src="{% static 'img/profile.png' %}" alt="" class="header__img"></a>
+                {% else %}
+                  <a href="{% url 'login' %}" class="header__logo">Login</a>
+                {% endif %}
+                <div class="header__toggle">
+                    <i class='bx bx-menu' id="header-toggle"></i>
+                </div>
+    
+            </div>
+        </header>
+
+        <!--========== NAV ==========-->
+        {% if user.is_authenticated %}
+          <div class="nav" id="navbar">
+              <nav class="nav__container">
+                  <div>
+                      <a href="{% url 'main-home' %}" class="nav__link nav__logo active">
+                          <i class='bx bxs-doughnut-chart nav__icon' ></i>
+                          <span class="nav__logo-name">CollegeSpace</span>
+                      </a>
+      
+                      <div class="nav__list">
+                          <div class="nav__items">
+                              <!-- <h3 class="nav__subtitle">Profile</h3> -->
+      
+                              <a href="{% url 'main-home' %}" class="nav__link ">
+                                  <i class='bx bxs-dashboard nav__icon' ></i>
+                                  <span class="nav__name">Dashboard</span>
+                              </a>
+                                <a href="{% url 'timetable' %}" class="nav__link">
+                                    <i class='bx bx-time-five nav__icon' ></i>
+                                    <span class="nav__name">Timetable</span>
+                                </a>
+                                <a href="{% url 'quiz-home'%}" class="nav__link">
+                                  <i class='bx bx-ghost nav__icon' ></i>
+                                  <span class="nav__name">Quiz/Assignment</span>
+                              </a>
+                              <a href="{% url 'connect-home'%}" class="nav__link">
+                                  <i class='bx bx-message-check nav__icon'></i>
+                                  <span class="nav__name">College Connect</span>
+                              </a>
+                              <!-- <h3 class="nav__subtitle">Menu</h3> -->
+                              {% if user.profile.br %}
+                                <div class="nav__dropdown">
+                                    <a href="#" class="nav__link">
+                                        <i class='bx bx-check-shield nav__icon' ></i>
+                                        <span class="nav__name">Utilities for BR</span>
+                                        <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                                    </a>
+
+                                    <div class="nav__dropdown-collapse">
+                                        <div class="nav__dropdown-content">
+                                            <a href="{% url 'timetable-update'%}" class="nav__dropdown-item">Update TT </a>
+                                            <a href="{% url 'quiz-create'%}" class="nav__dropdown-item">Add Quiz</a>
+                                            <a href="{% url 'asgn-create'%}" class="nav__dropdown-item">Add assgn</a>
+                                            <a href="{% url 'ancmnt-create'%}" class="nav__dropdown-item">Add &#128264</a>
+                                            {% comment %} <a href="#" class="nav__dropdown-item">Program</a> {% endcomment %}
+                                        </div>
+                                    </div>
+                                </div>
+                              {% endif %}
+                              <div class="nav__dropdown">
+                                  <a href="#" class="nav__link">
+                                      <i class='bx bx-user nav__icon' ></i>
+                                      <span class="nav__name">Account</span>
+                                      <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                                  </a>
+
+                                  <div class="nav__dropdown-collapse">
+                                      <div class="nav__dropdown-content">
+                                          <a href="{% url 'profile' %}" class="nav__dropdown-item">Profile</a>
+                                          <a href="#" class="nav__dropdown-item">Mail</a>
+                                          <a href="#" class="nav__dropdown-item">Accounts</a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <a href="{% url 'logout' %}" class="nav__link nav__logout">
+                      <i class='bx bx-log-out nav__icon' ></i>
+                      <span class="nav__name">Log Out</span>
+                  </a>
+              </nav>
+          </div>
+        {% endif %}
+        <!--========== CONTENTS ==========-->
+            <div class="container home-sec pt-4" >
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">
+                      {{ message }}
+                      </div>
+                {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock content%}
+          
+            </div>
+                  {% comment %} <footer class="pt-5 mt-5 border-top" style="background-color: #1d1b31;bottom: 0;width:99%;position:relative;left:.1%;">
+                    <div class="row">
+                      <div class="col-4 offset-1">
+                        <form>
+                          <h5>Subscribe to our newsletter</h5>
+                          <p>Monthly digest of whats new and exciting from us.</p>
+                          <div class="d-flex w-100 gap-2">
+                            <label for="newsletter1" class="visually-hidden">Email address</label>
+                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                            <button class="btn btn-primary" type="button">Subscribe</button>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="col-2 offset-1">
+                        <h5>Section</h5>
+                        <ul class="flex-column">
+                          <li class=" mb-2"><a href="#" class=" p-0 text-muted">Home</a></li>
+                          <li class=" mb-2"><a href="#" class=" p-0 text-muted">Features</a></li>
+                          <li class=" mb-2"><a href="#" class=" p-0 text-muted">Pricing</a></li>
+                          <li class=" mb-2"><a href="#" class=" p-0 text-muted">FAQs</a></li>
+                          <li class=" mb-2"><a href="#" class=" p-0 text-muted">About</a></li>
+                        </ul>
+                      </div>
+
+                      <div class="col-2">
+                        <h5>Section</h5>
+                        <ul class="flex-column">
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Home</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Features</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Pricing</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">FAQs</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">About</a></li>
+                        </ul>
+                      </div>
+
+                      <div class="col-2">
+                        <h5>Section</h5>
+                        <ul class="flex-column">
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Home</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Features</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">Pricing</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">FAQs</a></li>
+                          <li class="mb-2"><a href="#" class="p-0 text-muted">About</a></li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between pt-4 mt-4 border-top">
+                      <p class="ms-5 ps-3">&copy; 2021 All rights reserved by Anurag Ravi</p>
+                      <ul class="list-unstyled d-flex pe-5">
+                        <li class="ms-3"><a class="link-light" target="_blank" href="https://github.com/Anurag-ravi"><i class='bx bxl-github nav__icon bx-sm' ></i></a></li>
+                        <li class="ms-3"><a class="link-light" target="_blank" href="www.linkedin.com/in/anurag-ravi"><i class='bx bxl-linkedin-square bx-sm nav__icon' ></i></a></li>
+                        <li class="ms-3"><a class="link-light" target="_blank" href="https://m.facebook.com/ayushsrivasrav1916"><i class='bx bxl-facebook-circle bx-sm nav__icon' ></i></a></li>
+                        <li class="ms-3"><a class="link-light" target="_blank" href="https://www.instagram.com/anu.rag__r/"><i class='bx bxl-instagram-alt bx-sm nav__icon' ></i></a></li>
+                      </ul>
+                    </div>
+                  </footer> {% endcomment %}
+                  <div class="footer-dark">
+                    <footer>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3 item">
+                                    <h3>Services</h3>
+                                    <ul>
+                                        <li><a href="#">Web design</a></li>
+                                        <li><a href="#">Development</a></li>
+                                        <li><a href="#">Hosting</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6 col-md-3 item">
+                                    <h3>About</h3>
+                                    <ul>
+                                        <li><a href="#">Company</a></li>
+                                        <li><a href="#">Team</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 item text">
+                                    <h3>Company Name</h3>
+                                    <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.</p>
+                                </div>
+                                <div class="d-flex justify-content-center item">
+                                  <a class="link-light" target="_blank" href="https://github.com/Anurag-ravi"><i class='bx bxl-github nav__icon bx-sm' ></i></a>
+                                  <a class="link-light" target="_blank" href="www.linkedin.com/in/anurag-ravi"><i class='bx bxl-linkedin-square bx-sm nav__icon' ></i></a>
+                                  <a class="link-light" target="_blank" href="https://m.facebook.com/ayushsrivasrav1916"><i class='bx bxl-facebook-circle bx-sm nav__icon' ></i></a>
+                                  <a class="link-light" target="_blank" href="https://www.instagram.com/anu.rag__r/"><i class='bx bxl-instagram-alt bx-sm nav__icon' ></i></a>
+                                </div>
+                            </div>
+                            <p class="copyright">&copy; 2021 All rights reserved by Anurag Ravi</p>
+                        </div>
+                    </footer>
+                </div>
+        <!--========== MAIN JS ==========-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static '/js/main.js'%}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    </body>
+</html>
+
+{% comment %} <!DOCTYPE html>
+ <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+      {% block css %}{% endblock %}
+    </style>
+    {% if title %}
+        <title>College Space-{{ title }}</title>
+    {% else %}
+        <title>College Space</title>
+    {% endif %}
+</head>
+<body>
+<body>
+    {% load static%}
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-4" href="{% url 'main-home' %}">College Space</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active mx-4"
+                aria-current="page"
+                href="{% url 'timetable' %}"
+                >TimeTable</a
+              >
+
+
+            </li>
+
+              <a
+                class="nav-link active mx-4"
+                aria-current="page"
+                {% if user.is_authenticated %}
+                    <a href="https://www.iitg.ac.in/acad/academic_calender.php" target="_blank">Academic Calendar</a>
+                {% endif %}
+
+                </a
+              >
+          </ul>
+        </div>
+        <div class="navbar-nav">
+          {% if user.profile.br %}
+            <a class="nav-item nav-link" href="{% url 'monday-update' %}"
+              >Update TimeTable</a
+            >
+          {% endif %}
+          {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+          <a
+            class="nav-item nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Welcome {{ user.profile.name }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a style="color:black;" class="dropdown-item" href="{% url 'profile' %}">Your Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a style="color:black;" class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+          </li>
+          {% else %}
+          <a class="nav-item nav-link" href="/accounts/microsoft/login/?process=login"
+            ><button class="btn btn-outline-info">Login</button></a
+          >
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+              {{ message }}
+              </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock content%}
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html> {% endcomment %}

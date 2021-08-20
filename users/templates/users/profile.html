@@ -1,0 +1,32 @@
+{% extends "main/basic.html" %} {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <section>
+      <div class="row justify-content-around">
+        <div class="boxed col-6 border border-1 border-primary">
+          <div class="jumbotron p-4">
+            <h1 style="letter-spacing:2px;text-shadow:2px 2px #1d1b31;display: inline-block;" class="mb-2 float-left">{{user.profile.name}}</h1>
+            {% if user.profile.br %}
+              <div type="button" style="float:right;" class="badge rounded-pill bg-success" >BR</div>
+            {% endif %}
+            <hr>
+            <h3 class="my-2 text-wrap">Email : {{user.email}}</h3>
+            <h5 class="my-2">Roll No : {{user.profile.roll}} </h5>
+            <h5 class="my-2">Batch : {{user.profile.batch}} </h5>
+            <h5 class="my-2">Department : {{user.profile.department}} </h5>
+          </div>
+        </div>
+        {% if user.profile.br %}
+        <div class="boxed col-4 border border-1 border-primary">
+          <h5 class="text-center pt-3" id="exampleModalLabel">Hello Ms/Miss Representative</h5>
+          <div class="p-2">
+          So, you are now the representator of {{ user.profile.batch }}, {{ user.profile.department }} batch.<br>
+          Here are you responsibilities and Permissions:<br>
+          <b>1:</b> You have to update the time table,quiz and assignment schedules as soon as they are announced.<br>
+          <b>2:</b> On your dashboard the is one Utilities section which contains all your functions to perform in need.<br> 
+        </div>
+        {% endif %}
+      </div>
+      </div>
+      <section class="mt-2">&#9733 If any of the details is not found correct then immediately email us.</section>
+    </section>
+{% endblock content %}

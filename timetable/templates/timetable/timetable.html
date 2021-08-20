@@ -1,0 +1,183 @@
+{% extends 'main/basic.html' %} 
+{% block content %}
+{% for tt in tts %}
+{% if tt.section == "0" %}
+    <h1 class="text-center m-4" > Your Batch's Timetable </h1>
+{% else %}
+    <h1 class="text-center m-4" > Your Batch's Timetable {Section: {{tt.section}} }</h1>
+{% endif %}
+<table class="table table-striped border">
+  <thead>
+    <tr class="m-2">
+      <th class="text-justify py-3" scope="col">Day\Slot</th>
+      <th class="text-center py-3" scope="col">8 - 9</th>
+      <th  class="text-center py-3" scope="col">9 - 10</th>
+      <th  class="text-center py-3" scope="col">10 - 11</th>
+      <th  class="text-center py-3" scope="col">11 - 12</th>
+      <th  class="text-center py-3" scope="col">12 - 1</th>
+      <th  class="text-center py-3" scope="col">2 - 3</th>
+      <th  class="text-center py-3" scope="col">3 - 4</th>
+      <th  class="text-center py-3" scope="col">4 - 5</th>
+      <th  class="text-center py-3" scope="col">5 - 6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class="text-justify py-3" scope="row">Monday</th>
+      <td class="text-center py-3" >{{ tt.monday.eight_nine }}</td>
+      {% if tt.monday.nine_ten == tt.monday.ten_eleven %}
+        {% if tt.monday.ten_eleven == tt.monday.eleven_twelve%}
+          <td colspan="3" class="text-center py-3" >{{ tt.monday.nine_ten }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.monday.nine_ten }}</td>
+          <td class="text-center py-3" >{{ tt.monday.eleven_twelve }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.monday.nine_ten }}</td>
+        <td class="text-center py-3" >{{ tt.monday.ten_eleven }}</td>
+        <td class="text-center py-3" >{{ tt.monday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.monday.twelve_one }}</td>
+      {% if tt.monday.two_three == tt.monday.three_four %}
+        {% if tt.monday.three_four == tt.monday.four_five%}
+          <td colspan="3" class="text-center py-3" >{{ tt.monday.two_three }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.monday.two_three }}</td>
+          <td class="text-center py-3" >{{ tt.monday.four_five }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.monday.two_three }}</td>
+        <td class="text-center py-3" >{{ tt.monday.three_four }}</td>
+        <td class="text-center py-3" >{{ tt.monday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.monday.five_six }}</td>
+    </tr>
+    <tr>
+      <th class="text-justify py-3" scope="row">Tuesday</th>
+      <td class="text-center py-3" >{{ tt.tuesday.eight_nine }}</td>
+      {% if tt.tuesday.nine_ten == tt.tuesday.ten_eleven %}
+        {% if tt.tuesday.ten_eleven == tt.tuesday.eleven_twelve%}
+          <td colspan="3" class="text-center py-3" >{{ tt.tuesday.nine_ten }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.tuesday.nine_ten }}</td>
+          <td class="text-center py-3" >{{ tt.tuesday.eleven_twelve }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.tuesday.nine_ten }}</td>
+        <td class="text-center py-3" >{{ tt.tuesday.ten_eleven }}</td>
+        <td class="text-center py-3" >{{ tt.tuesday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.tuesday.twelve_one }}</td>
+      {% if tt.tuesday.two_three == tt.tuesday.three_four %}
+        {% if tt.tuesday.three_four == tt.tuesday.four_five%}
+          <td colspan="3" class="text-center py-3" >{{ tt.tuesday.two_three }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.tuesday.two_three }}</td>
+          <td class="text-center py-3" >{{ tt.tuesday.four_five }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.tuesday.two_three }}</td>
+        <td class="text-center py-3" >{{ tt.tuesday.three_four }}</td>
+        <td class="text-center py-3" >{{ tt.tuesday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.tuesday.five_six }}</td>
+    </tr>
+    <tr>
+      <th class="text-justify py-3" scope="row">Wednesday</th>
+      <td class="text-center py-3" >{{ tt.wednesday.eight_nine }}</td>
+      {% if tt.wednesday.nine_ten == tt.wednesday.ten_eleven %}
+        {% if tt.wednesday.ten_eleven == tt.wednesday.eleven_twelve %}
+          <td colspan="3" class="text-center py-3" >{{ tt.wednesday.nine_ten }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.wednesday.nine_ten }}</td>
+          <td class="text-center py-3" >{{ tt.wednesday.eleven_twelve }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.wednesday.nine_ten }}</td>
+        <td class="text-center py-3" >{{ tt.wednesday.ten_eleven }}</td>
+        <td class="text-center py-3" >{{ tt.wednesday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.wednesday.twelve_one }}</td>
+      {% if tt.wednesday.two_three == tt.wednesday.three_four %}
+        {% if tt.wednesday.three_four == tt.wednesday.four_five%}
+          <td colspan="3" class="text-center py-3" >{{ tt.wednesday.two_three }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.wednesday.two_three }}</td>
+          <td class="text-center py-3" >{{ tt.wednesday.four_five }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.wednesday.two_three }}</td>
+        <td class="text-center py-3" >{{ tt.wednesday.three_four }}</td>
+        <td class="text-center py-3" >{{ tt.wednesday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.wednesday.five_six }}</td>
+    </tr>
+    <tr>
+      <th class="text-justify py-3" scope="row">Thursday</th>
+      <td class="text-center py-3" >{{ tt.thursday.eight_nine }}</td>
+      {% if tt.thursday.nine_ten == tt.thursday.ten_eleven %}
+        {% if tt.thursday.ten_eleven == tt.thursday.eleven_twelve%}
+          <td colspan="3" class="text-center py-3" >{{ tt.thursday.nine_ten }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.thursday.nine_ten }}</td>
+          <td class="text-center py-3" >{{ tt.thursday.eleven_twelve }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.thursday.nine_ten }}</td>
+        <td class="text-center py-3" >{{ tt.thursday.ten_eleven }}</td>
+        <td class="text-center py-3" >{{ tt.thursday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.thursday.twelve_one }}</td>
+      {% if tt.thursday.two_three == tt.thursday.three_four %}
+        {% if tt.thursday.three_four == tt.thursday.four_five%}
+          <td colspan="3" class="text-center py-3" >{{ tt.thursday.two_three }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.thursday.two_three }}</td>
+          <td class="text-center py-3" >{{ tt.thursday.four_five }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.thursday.two_three }}</td>
+        <td class="text-center py-3" >{{ tt.thursday.three_four }}</td>
+        <td class="text-center py-3" >{{ tt.thursday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.thursday.five_six }}</td>
+    </tr>
+    <tr>
+      <th class="text-justify py-3" scope="row">Friday</th>
+      <td class="text-center py-3" >{{ tt.friday.eight_nine }}</td>
+      {% if tt.friday.nine_ten == tt.friday.ten_eleven %}
+        {% if tt.friday.ten_eleven == tt.friday.eleven_twelve%}
+          <td colspan="3" class="text-center py-3" >{{ tt.friday.nine_ten }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.friday.nine_ten }}</td>
+          <td class="text-center py-3" >{{ tt.friday.eleven_twelve }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.friday.nine_ten }}</td>
+        <td class="text-center py-3" >{{ tt.friday.ten_eleven }}</td>
+        <td class="text-center py-3" >{{ tt.friday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.friday.twelve_one }}</td>
+      {% if tt.friday.two_three == tt.friday.three_four %}
+        {% if tt.friday.three_four == tt.friday.four_five%}
+          <td colspan="3" class="text-center py-3" >{{ tt.friday.two_three }}</td>
+        {% else %}
+          <td colspan="2" class="text-center py-3" >{{ tt.friday.two_three }}</td>
+          <td class="text-center py-3" >{{ tt.friday.four_five }}</td>
+        {% endif %}
+      {% else %}
+        <td class="text-center py-3" >{{ tt.friday.two_three }}</td>
+        <td class="text-center py-3" >{{ tt.friday.three_four }}</td>
+        <td class="text-center py-3" >{{ tt.friday.four_five }}</td>
+      {% endif %}
+      <td class="text-center py-3" >{{ tt.friday.five_six }}</td>
+    </tr>
+  </tbody>
+</table>
+{% if user.profile.br%}
+  <a role="button" class="btn btn-primary" href="{% url 'timetable-update'%}">Update Timetable</a>
+{% else %}
+  <section class="mt-4">&#9733 If any of the details is not found correct then please inform your Branch Reprasentative.</section>
+{% endif %}
+{% endfor %}
+{% endblock content %}

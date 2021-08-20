@@ -1,0 +1,14 @@
+{% extends "main/basic.html" %}
+{% block content %}
+{% load static %}
+<div class="content-section justify-content-center row">
+  <div class="card" style="width: 18rem;">
+    <img src="{% static '/img/iitg.png' %}" class="card-img-top pt-2" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Logged out</h5>
+      <p class="card-text">You have been sucessfully logged out. Please login again to continue.</p>
+      <a href="/accounts/microsoft/login/?process=login" class="btn btn-success" role="button">Login again</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

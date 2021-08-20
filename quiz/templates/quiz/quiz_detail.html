@@ -1,0 +1,22 @@
+{% extends 'main/basic.html' %} 
+{% block content %}
+<div class="my-3">
+  <div class="container my-1 border pb-3 col-6">
+    <h2 class="text-muted mx-2 pt-3" style="text-align:center;">
+    <div class="text-uppercase">{{ object.title }}</div>
+    </h2>    
+  <h6><p class="mb-3 mt-2 ms-2 py-3 border-bottom border-top"><strong>Description :</strong> {{ object.description}}</p></h6>
+  <h6><p class="mb-2 mt-1 ms-2 ">Course : {{ object.course}}</p></h6>
+  <h6><p class="mb-2 mt-1 ms-2">On : {{ object.date }} </p></h6>
+  <h6><p class="mb-2 mt-1 ms-2">From {{ object.time_from }} To {{ object.time_to }}</p></h6>
+  {% if user.profile.br %}
+    <a href="{% url 'quiz-update' object.id%}"
+            ><button class="m-2 btn btn-info">Update</button></a
+          >
+    <a href="{% url 'quiz-delete' object.id%}"
+            ><button class="m-2 btn btn-danger">Delete</button></a
+          >
+  {% endif %}
+  </div>  
+</div>
+{% endblock content %}

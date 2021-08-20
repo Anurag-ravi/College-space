@@ -1,0 +1,14 @@
+{% extends "main/basic.html" %}
+{% block content %}
+{% load static %}
+<div class="content-section justify-content-center row">
+  <div class="card" style="width: 18rem;">
+    <img src="{% static '/img/iitg.png' %}" class="card-img-top pt-2" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Please Login</h5>
+      <p class="card-text">Use IIT Guwahati Webmail ID to access this site.</p>
+      <a href="/accounts/microsoft/login/?process=login" class="btn btn-success" role="button">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'main/basic.html' %} 
+{% block content %}
+<div class="container row justify-content-around">
+  <div class="col-5 mt-2">
+  <h3 class="text-center mb-2 border-bottom border-2 p-2">Upcoming Quizzes</h3>
+  {% for quiz in quizs %}
+      <div class="my-2 border border-2 rounded-pill bg-danger bg-gradient" style="text-align:center;" >
+        <div class="container my-1 pt-2 col-8">
+          <h5 class=""> 
+          <a href="{% url 'quiz-detail' quiz.id%}" class="text-warning">{{ quiz.title }} of {{ quiz.course }}</a>
+          </h5>
+          <p class="text-white fst-italic">on {{ quiz.date }} , from {{ quiz.time_from }}  to  {{ quiz.time_to }}</p>
+        </div>  
+      </div>
+  {% endfor %}
+  </div>
+  <div class="col-5 mt-2">
+  <h3 class="text-center mb-2 border-bottom border-2 p-2">Upcoming Assignments</h3>
+  {% for assignment in assignments %}
+      <div class="my-2 border border-2 rounded-pill bg-primary bg-gradient" style="text-align:center;" >
+        <div class="container my-1 pt-2 col-8">
+          <h5 class=""> 
+          <a href="{% url 'asgn-detail' assignment.id%}" class="text-warning">{{ assignment.title }} of {{ assignment.course }}</a>
+          </h5>
+          <p class="text-white fst-italic">deadline &#8594 {{ assignment.deadline }} ,upto {{ assignment.time }}</p>
+        </div>  
+      </div>
+  {% endfor %}
+  </div>
+</div>
+{% endblock content %}

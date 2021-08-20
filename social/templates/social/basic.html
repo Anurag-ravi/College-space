@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--========== BOX ICONS ==========-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="{% static '/css/main.css' %}">
+
+        <style>
+          {% block css %}{% endblock %}
+        </style>
+        {% if title %}
+            <title>College Connect-{{ title }}</title>
+        {% else %}
+            <title>College Connect</title>
+        {% endif %}
+    </head>
+     {% comment %} style="background-image: url('{% static "img/background.jpg"%}'); background-size: 100%;background-attachment: fixed;" {% endcomment %}
+    <body id="bg"> 
+        <!--========== HEADER ==========-->
+        <header class="header">
+            <div class="header__container">
+                {% if user.is_authenticated %}
+                  <a class="header__logo align-middle" id="messbar">College Connect</a>
+                {% else %}
+                  <a href="{% url 'login' %}" class="header__logo">College Space</a>
+                {% endif %}
+                <!-- <div class="header__search">
+                    <input type="search" placeholder="Search" class="header__input">
+                    <i class='bx bx-search header__icon'></i>
+                </div> -->
+                {% if user.is_authenticated %}
+                  <a target="_blank" href="https://www.iitg.ac.in/"><img src="{% static 'img/profile.png' %}" alt="" class="header__img"></a>
+                {% else %}
+                  <a href="{% url 'login' %}" class="header__logo">Login</a>
+                {% endif %}
+                <div class="header__toggle">
+                    <i class='bx bx-menu' id="header-toggle"></i>
+                </div>
+    
+            </div>
+        </header>
+
+        <!--========== NAV ==========-->
+        {% if user.is_authenticated %}
+          <div class="nav" id="navbar">
+              <nav class="nav__container">
+                  <div>
+                      <a href="{% url 'connect-home' %}" class="nav__link nav__logo active">
+                          <i class='bx bxs-doughnut-chart nav__icon' ></i>
+                          <span class="nav__logo-name">Connect</span>
+                      </a>
+      
+                      <div class="nav__list">
+                          <div class="nav__items">
+                              <!-- <h3 class="nav__subtitle">Profile</h3> -->
+      
+                              <a href="{% url 'main-home' %}" class="nav__link">
+                                  <i class='bx bx-bookmark nav__icon' ></i>
+                                  <span class="nav__name">College Space</span>
+                              </a>
+                              <a href="{% url 'main-home' %}" class="nav__link ">
+                                  <i class='bx bxs-dashboard nav__icon' ></i>
+                                  <span class="nav__name">Dashboard</span>
+                              </a>
+                                <a href="{% url 'timetable' %}" class="nav__link">
+                                    <i class='bx bx-time-five nav__icon' ></i>
+                                    <span class="nav__name">Timetable</span>
+                                </a>
+                                <a href="{% url 'quiz-home'%}" class="nav__link">
+                                  <i class='bx bx-ghost nav__icon' ></i>
+                                  <span class="nav__name">Quiz/Assignment</span>
+                              </a>
+                              <!-- <h3 class="nav__subtitle">Menu</h3> -->
+                              {% if user.profile.br %}
+                                <div class="nav__dropdown">
+                                    <a href="#" class="nav__link">
+                                        <i class='bx bx-check-shield nav__icon' ></i>
+                                        <span class="nav__name">Utilities for BR</span>
+                                        <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                                    </a>
+
+                                    <div class="nav__dropdown-collapse">
+                                        <div class="nav__dropdown-content">
+                                            <a href="{% url 'timetable-update'%}" class="nav__dropdown-item">Update TT </a>
+                                            <a href="{% url 'quiz-create'%}" class="nav__dropdown-item">Add Quiz</a>
+                                            <a href="{% url 'asgn-create'%}" class="nav__dropdown-item">Add assgn</a>
+                                            <a href="{% url 'ancmnt-create'%}" class="nav__dropdown-item">Add &#128264</a>
+                                            {% comment %} <a href="#" class="nav__dropdown-item">Program</a> {% endcomment %}
+                                        </div>
+                                    </div>
+                                </div>
+                              {% endif %}
+                              <div class="nav__dropdown">
+                                  <a href="#" class="nav__link">
+                                      <i class='bx bx-user nav__icon' ></i>
+                                      <span class="nav__name">Account</span>
+                                      <i class='bx bx-chevron-down nav__icon nav__dropdown-icon'></i>
+                                  </a>
+
+                                  <div class="nav__dropdown-collapse">
+                                      <div class="nav__dropdown-content">
+                                          <a href="{% url 'profile' %}" class="nav__dropdown-item">Profile</a>
+                                          <a href="#" class="nav__dropdown-item">Mail</a>
+                                          <a href="#" class="nav__dropdown-item">Accounts</a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <a href="{% url 'logout' %}" class="nav__link nav__logout">
+                      <i class='bx bx-log-out nav__icon' ></i>
+                      <span class="nav__name">Log Out</span>
+                  </a>
+              </nav>
+          </div>
+        {% endif %}
+        <!--========== CONTENTS ==========-->
+            <div class="container home-sec pt-4" >
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">
+                      {{ message }}
+                      </div>
+                {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock content%}
+          
+            </div>
+        <!--========== MAIN JS ==========-->
+        <script src="{% static '/js/main.js'%}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'main/basic.html' %} 
+{% block content %}
+    <h3 class="text-center">Here are your briefings</h3>
+    <div class="row mt-3 justify-content-evenly">
+        <div class="container text-break bg-gradient bg-opacity-100 text-white bg-success border border-success rounded-3 px-3 py-4 col-2">
+            {{class_count}} Class Hours today
+        </div>
+        <div class="container text-break bg-gradient bg-opacity-100 text-white bg-danger border border-danger rounded-3 px-3 py-4 col-2">
+            {{asgn_count}} Assignments
+        </div>
+        <div class="container text-break bg-gradient bg-opacity-100 text-white bg-warning border border-warning rounded-3 px-3 py-4 col-2">
+            {{quiz_count}} Quizes
+        </div>
+        <div class="container text-break bg-gradient bg-opacity-100 text-white bg-primary border border-primary rounded-3 px-3 py-4 col-2">
+            Hello
+        </div>
+    </div>
+    <div class="row mt-5 justify-content-start">
+        <div class="overflow-auto border border-2 bg-white bg-gradient bg-opacity-50 rounded-3 col-5" style="height:300px;">
+            <h3 class="text-center mb-2 border-bottom border-2 p-2">Announcements</h3>
+            {% for announcement in announcements %}
+                <div class="my-2 border border-2 bg-info bg-gradient bg-opacity-75 rounded-3" style="text-align:center;" >
+                    <div class="container my-1 pt-2">
+                    <h5 class=""> 
+                    <a href="{% url 'ancmnt-detail' announcement.id%}" class="text-body">&#9733 {{ announcement.title }}</a>
+                    </h5>
+                    <p class="fst-italic">On {{announcement.date}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
