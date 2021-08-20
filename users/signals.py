@@ -1,8 +1,8 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from .models import Profile ,Relationship
-
+import os
 
 @receiver(post_save,sender = User)
 def create_profile(sender,instance,created,**kwargs):
@@ -79,3 +79,13 @@ def add_to_friends(sender,instance,created,**kwargs):
         receiver_.friends.add(sender_.user)
         sender_.save()
         receiver_.save()
+
+@receiver(pre_save,sender = Profile)
+def delete_old(sender,instance,**kwargs):
+    if instance.pk:
+        try:
+            old = Profile.objects.get(pk=instance.pk).avatar
+        except Profile.DoesNotExist:
+            return
+        if os.path.isfile(old.path):
+            os.remove(old.path)

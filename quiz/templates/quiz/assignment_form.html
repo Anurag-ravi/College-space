@@ -2,11 +2,11 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="row justify-content-around">
-    <div class="boxed col-6">
+    <div class="boxed col-6 border border-primary bg-light">
     <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Fill the Form Correctly</legend>
+        <legend class="border-bottom mb-4 py-2 text-center">Fill the Form Correctly</legend>
         <div class="border py-2 px-2">
             {{ form|crispy }}
         </div>

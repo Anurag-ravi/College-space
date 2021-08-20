@@ -24,3 +24,33 @@ function colorLink(){
 }
 
 linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+const targetDiv = document.getElementById("form");
+const updbtm = document.getElementById("update");
+const btn = document.getElementById("toggle");
+function btnfunction () {
+  console.log("Hello world1!");
+  if (targetDiv.style.display !== "none") {
+    targetDiv.style.display = "none";
+  } else {
+    targetDiv.style.display = "block";
+  }
+  if (btn.style.display !== "none") {
+    btn.style.display = "none";
+  } else {
+    btn.style.display = "block";
+  }
+};
+
+function updfunction () {
+  if (targetDiv.style.display !== "none") {
+    targetDiv.style.display = "none";
+  } else {
+    targetDiv.style.display = "block";
+  }
+  if (btn.style.display !== "none") {
+    btn.style.display = "none";
+  } else {
+    btn.style.display = "block";
+  }
+};

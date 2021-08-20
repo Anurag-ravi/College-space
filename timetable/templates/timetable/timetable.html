@@ -6,7 +6,7 @@
 {% else %}
     <h1 class="text-center m-4" > Your Batch's Timetable {Section: {{tt.section}} }</h1>
 {% endif %}
-<table class="table table-striped border">
+<table class="table table-striped border border-primary bg-light">
   <thead>
     <tr class="m-2">
       <th class="text-justify py-3" scope="col">Day\Slot</th>
@@ -175,7 +175,6 @@
   </tbody>
 </table>
 {% if user.profile.br%}
-  <a role="button" class="btn btn-primary" href="{% url 'timetable-update'%}">Update Timetable</a>
 {% else %}
   <section class="mt-4">&#9733 If any of the details is not found correct then please inform your Branch Reprasentative.</section>
 {% endif %}
