@@ -22,6 +22,7 @@
               <h5 class="my-2">Section : {{user.profile.section}} </h5>
             {% endif %}
             <h5 class="my-2">No. of Friends : {{user.profile.get_friends_no}} </h5>
+            <h5 class="my-2">No. of Posts : {{user.profile.get_post_no}} <a href="{% url 'self-posts' %}" class="btn btn-outline-info">See</a></h5>
           </div>
         </div>
         {% if user.profile.br %}

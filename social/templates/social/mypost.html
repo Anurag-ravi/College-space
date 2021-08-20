@@ -1,0 +1,14 @@
+{% extends "social/basic.html" %}
+{% block content %}
+<div class="row justify-content-around">
+    <div class="col-7 border">
+        {% for post in posts %}
+            <h1>{{post.content}}</h1>
+        {% endfor %}
+    </div>
+    <div class="col-4 border" style="height:10%;">
+        sidebar<br>
+    </div>
+</div>
+
+{% endblock content %}

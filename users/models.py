@@ -21,6 +21,20 @@ class Profile(models.Model):
     def get_friends_no(self):
         return self.friends.all().count()
 
+    def get_post_no(self):
+        return self.posts.all().count()
+
+    def get_all_post(self):
+        return self.posts.all()
+
+    def get_all_likes_no(self):
+        likes = self.like_set.all()
+        total = 0
+        for like in likes:
+            if like.value == 'Like':
+                total += 1
+        return total
+
     def __str__(self):
         return f'{self.user.first_name} profile'
 

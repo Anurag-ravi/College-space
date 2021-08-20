@@ -65,7 +65,6 @@ def create_profile(sender,instance,created,**kwargs):
         else:
             Profile.objects.create(user = instance,name = str(w),roll = str(x),batch = BAT_CHOICE[int(y)],programme = PRG_CHOICE[int(u)],department = DEP_CHOICE[int(z)],section = "0")
 
-
 @receiver(post_save,sender = User)
 def save_profile(sender,instance,**kwargs):
     instance.profile.save()
@@ -80,12 +79,12 @@ def add_to_friends(sender,instance,created,**kwargs):
         sender_.save()
         receiver_.save()
 
-@receiver(pre_save,sender = Profile)
-def delete_old(sender,instance,**kwargs):
-    if instance.pk:
-        try:
-            old = Profile.objects.get(pk=instance.pk).avatar
-        except Profile.DoesNotExist:
-            return
-        if os.path.isfile(old.path):
-            os.remove(old.path)
+# @receiver(pre_save,sender = Profile)
+# def delete_old(sender,instance,**kwargs):
+#     if instance.pk:
+#         try:
+#             old = Profile.objects.get(pk=instance.pk).avatar
+#         except Profile.DoesNotExist:
+#             return
+#         if os.path.isfile(old.path):
+#             os.remove(old.path)
