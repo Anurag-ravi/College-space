@@ -29,7 +29,6 @@ const targetDiv = document.getElementById("form");
 const updbtm = document.getElementById("update");
 const btn = document.getElementById("toggle");
 function btnfunction () {
-  console.log("Hello world1!");
   if (targetDiv.style.display !== "none") {
     targetDiv.style.display = "none";
   } else {

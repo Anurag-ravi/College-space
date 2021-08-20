@@ -25,8 +25,8 @@
             <h5 class="my-2">No. of Posts : {{user.profile.get_post_no}} <a href="{% url 'self-posts' %}" class="btn btn-outline-info">See</a></h5>
           </div>
         </div>
-        {% if user.profile.br %}
-        <div class="boxed text-break col-4 border border-1 border-primary bg-light">
+        {% comment %} {% if user.profile.br %} {% endcomment %}
+        <div class="boxed text-break col-4 border border-1 border-primary bg-light" id="form" style="display:none;">
           <h5 class="text-center pt-3">Update Profile</h5>
           <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
@@ -36,7 +36,7 @@
               </div>
               </fieldset>
               <div class="form-group my-2">
-              <button class="btn btn-outline-info" id="update" type="submit">Update</button>
+              <button class="btn btn-outline-info" id="update" onclick="updfunction()" type="submit">Update</button>
               </div>
           </form>
           {% comment %} <h5 class="text-center pt-3" id="exampleModalLabel">Hello Ms/Miss Representative</h5>
@@ -46,8 +46,9 @@
           <b>1:</b> You have to update the time table,quiz and assignment schedules as soon as they are announced.<br>
           <b>2:</b> On your dashboard the is one Utilities section which contains all your functions to perform in need.<br>  {% endcomment %}
         </div>
-        {% endif %}
+        {% comment %} {% endif %} {% endcomment %}
       </div>
+      <button class=" ms-5 btn btn-info" onclick="btnfunction()" style="display:block;" id="toggle" >Update Profile</button>
       <section class="mt-2 text-dark">&#9733 If any of the details is not found correct then immediately email us.</section>
       </div>
     </section>
