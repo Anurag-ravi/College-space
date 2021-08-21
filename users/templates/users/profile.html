@@ -25,7 +25,6 @@
             <h5 class="my-2">No. of Posts : {{user.profile.get_post_no}} <a href="{% url 'self-posts' %}" class="btn btn-outline-info">See</a></h5>
           </div>
         </div>
-        {% comment %} {% if user.profile.br %} {% endcomment %}
         <div class="boxed text-break col-4 border border-1 border-primary bg-light" id="form" style="display:none;">
           <h5 class="text-center pt-3">Update Profile</h5>
           <form method="POST" enctype="multipart/form-data">
@@ -39,17 +38,22 @@
               <button class="btn btn-outline-info" id="update" onclick="updfunction()" type="submit">Update</button>
               </div>
           </form>
-          {% comment %} <h5 class="text-center pt-3" id="exampleModalLabel">Hello Ms/Miss Representative</h5>
-          <div class="p-2">
-          So, you are now the representator of {{ user.profile.batch }}, {{ user.profile.department }} batch.<br>
-          Here are you responsibilities and Permissions:<br>
-          <b>1:</b> You have to update the time table,quiz and assignment schedules as soon as they are announced.<br>
-          <b>2:</b> On your dashboard the is one Utilities section which contains all your functions to perform in need.<br>  {% endcomment %}
         </div>
-        {% comment %} {% endif %} {% endcomment %}
       </div>
       <button class=" ms-5 btn btn-info" onclick="btnfunction()" style="display:block;" id="toggle" >Update Profile</button>
       <section class="mt-2 text-dark">&#9733 If any of the details is not found correct then immediately email us.</section>
       </div>
+    {% if user.profile.br %}
+      <div class="row justify-content-around" >
+        <div class="boxed text-break col-4 mb-3 border border-1 border-primary bg-light" id="br" style="display:block;">
+          <h5 class="text-center pt-3" id="exampleModalLabel">Hello Ms/Miss Representative</h5>
+          <div class="p-2">
+          So, you are now the representator of {{ user.profile.batch }}, {{ user.profile.department }} batch.<br>
+          Here are you responsibilities and Permissions:<br>
+          <b>1:</b> You have to update the time table,quiz and assignment schedules as soon as they are announced.<br>
+          <b>2:</b> On your dashboard the is one Utilities section which contains all your functions to perform in need.<br>
+        </div>
+      </div>
+    {% endif %}
     </section>
 {% endblock content %}

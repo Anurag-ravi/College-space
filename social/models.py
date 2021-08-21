@@ -16,6 +16,9 @@ class Post(models.Model):
 
     def num_likes(self):
         return self.liked.all().count()
+    
+    def num_likes_one(self):
+        return self.liked.all().count()-1
 
     def num_comments(self):
         return self.comment_set.all().count()
