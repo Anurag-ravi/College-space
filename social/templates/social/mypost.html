@@ -2,26 +2,72 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="row justify-content-around">
-    <div class=" container col-6 border">
+    <div class="overflow-auto container col-6 border" style="height: 95vh;;">
         {% for post in posts %}
             <div class="container my-3 bg-light border ">
                 <div class="d-flex py-2 mb-2 border-bottom">
                     <img src="{{post.author.avatar.url}}" class="rounded-circle z-depth-2" alt="{{user.profile.name}}" style="width:12%;height:12%; display:inline-block;">
                     <a href="#" class="text-dark pt-2 ps-2 flex-grow-1"><h3>{{post.author.name}}</h3></a>
-                    <i class='bx bx-dots-vertical-rounded pt-2 bx-sm'></i>
+                    {% if post.author == request.user.profile %}
+                        <a href="{% url 'post-update' post.pk%}" data-toggle="tooltip" data-placement="right" title="Update Post" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-sm'></i></a>
+                        <a href="{% url 'post-delete' post.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Post" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-sm'></i></a>
+                    {% endif %}
                 </div>
-                <p class="text-break border-bottom pb-1">On {{post.updated}}</p>
-                <p class="text-break">{{post.author.name}} : {{post.content}}</p>
+                <p class="text-break border-bottom pb-1 text-muted">{{post.created|timesince}} ago</p>
+                <p class="text-break text-dark">{{post.content}}</p>
                 {% if post.image %}
                     <img src="{{post.image.url}}" class="z-depth-2" alt="{{user.profile.name}}" style="width:100%;">
                 {% endif %}
                 <div class="d-flex py-2 mb-2">
-                    <i id="like" onclick="Nolike()" class='bx bx-sm mx-2 bx-heart' style="display:block;"></i>
+                    <form class="me-2" action="{% url 'like_unlike'%}" method="POST">
+                    {% csrf_token %}
+                        <input type="hidden" name="post_id" value={{post.id}}>
+                        <button class="btn btn-danger" type="submit">
+                        {% if profile not in post.liked.all %}
+                            <i class='bx bx-sm mx-2 bx-heart'></i>
+                        {% else %}
+                            <i class='bx bx-sm mx-2 bxs-heart'></i>
+                        {% endif %}
+                        </button>
+                    </form>
+                    {% if profile not in post.liked.all %}
+                    Liked by {{post.num_likes}} others
+                    {% else %}
+                        Liked by you and  {{post.num_likes_one}} others
+                    {% endif %}
+                    {% comment %} <i id="like" onclick="Nolike()" class='bx bx-sm mx-2 bx-heart' style="display:block;"></i>
                     <i id="liked" onclick="Like()" class='bx bx-sm mx-2 bxs-heart' style="display:none;"></i>
                     <i class='bx bx-sm mx-2 bx-comment-add'></i>
                     <i class='bx bx-sm mx-2 bx-share flex-grow-1'></i>
-                    <i class='bx bx-sm mx-2 bx-add-to-queue'></i>
+                    <i class='bx bx-sm mx-2 bx-add-to-queue'></i> {% endcomment %}
                 </div>
+                {% if post.num_comments == 0 %}
+                {% else %}
+                    <p class="commentbtn">all {{post.num_comments}} comments</p>
+                    <div class="overflow-auto commentbox" style="height:100px;">
+                        {% if post.comment_set.all %}
+                            {% for c in post.comment_set.all %}
+                            <div class="text-break py-1 d-flex">
+                                <img src="{{c.user.avatar.url}}" class="rounded-circle z-depth-2" style="width:5%;height:5%; display:inline-block;">
+                                <span class="ps-2"> {{c.user.name }} : {{c.body}}</span>
+                                {% if c.user == request.user.profile or c.post.author == request.user.profile %}
+                                    <a href="#" data-toggle="tooltip" data-placement="right" title="Update Comment" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-xs'></i></a>
+                                    <a href="#" data-toggle="tooltip" data-placement="right" title="Delete Comment" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-xs'></i></a>
+
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                        <input type="hidden" name="post_id" value={{post.id}}>
+                        {{ c_form|crispy }}
+                    <div class="form-group my-2">
+                    <button class="btn btn-primary" id="update" name="c_submit" type="submit">Comment</button>
+                    </div>
+                </form>
             </div>
         {% endfor %}
     </div>

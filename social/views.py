@@ -3,6 +3,9 @@ from django.contrib import messages
 from .models import Post,Like,Comment
 from .forms import PostForm,CommentForm
 from users.models import Profile
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import UpdateView,DeleteView
+from django.urls import reverse_lazy
 # Create your views here.
 def index(request):
     posts = Post.objects.all()
@@ -22,6 +25,7 @@ def index(request):
             c_form.instance.user = request.user.profile
             c_form.instance.post = Post.objects.get(id=request.POST.get('post_id'))
             c_form.save()
+            c_form = CommentForm()
     param = {
         'posts':posts,
         'title':'home',
@@ -72,3 +76,61 @@ def like_unlike_post(request):
         post_obj.save()
         like.save()
     return redirect('connect-home')
+
+class PostDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):
+    model = Post
+    template_name = 'social/post_confirm_delete.html'
+    success_url = reverse_lazy('connect-home')
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user.profile == post.author:
+            return True
+        return False
+    def get_object(self, *args,**kwargs):
+        pk = self.kwargs.get('pk')
+        obj = Post.objects.get(pk=pk)
+        return obj
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'social/post_update.html'
+    success_url = reverse_lazy('self-posts')
+
+    def form_valid(self, form):
+        profile = Profile.objects.get(user=self.request.user)
+        if form.instance.author == profile:
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "You need to be post creator in order to update it")
+            return super().form_invalid(form)
+
+class CommentDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):
+    model = Comment
+    template_name = 'social/comment_confirm_delete.html'
+    success_url = reverse_lazy('connect-home')
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user.profile == comment.user:
+            return True
+        return False
+    def get_object(self, *args,**kwargs):
+        pk = self.kwargs.get('pk')
+        obj = Comment.objects.get(pk=pk)
+        return obj
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'social/comment_update.html'
+    success_url = reverse_lazy('connect-home')
+
+    def form_valid(self, form):
+        profile = Profile.objects.get(user=self.request.user)
+        if form.instance.user == profile:
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "You need to be commentor in order to update it")
+            return super().form_invalid(form)

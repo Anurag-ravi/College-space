@@ -1,0 +1,20 @@
+{% extends 'social/basic.html' %} 
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="row justify-content-around">
+<div class="col-4 border" style="height:10%;">
+    <h5 class="text-center pt-3">Update Post</h5>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+            <div class="border py-2 px-2">
+                {{ form|crispy }}
+            </div>
+            </fieldset>
+            <div class="form-group my-2">
+            <button class="btn btn-outline-info" name="p_submit" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

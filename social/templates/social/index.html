@@ -8,9 +8,12 @@
                 <div class="d-flex py-2 mb-2 border-bottom">
                     <img src="{{post.author.avatar.url}}" class="rounded-circle z-depth-2" alt="{{user.profile.name}}" style="width:12%;height:12%; display:inline-block;">
                     <a href="#" class="text-dark pt-2 ps-2 flex-grow-1"><h3>{{post.author.name}}</h3></a>
-                    <i class='bx bx-dots-vertical-rounded pt-2 bx-sm'></i>
+                    {% if post.author == request.user.profile %}
+                        <a href="{% url 'post-update' post.pk%}" data-toggle="tooltip" data-placement="right" title="Update Post" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-sm'></i></a>
+                        <a href="{% url 'post-delete' post.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Post" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-sm'></i></a>
+                    {% endif %}
                 </div>
-                <p class="text-break border-bottom pb-1 text-muted">On {{post.updated}}</p>
+                <p class="text-break border-bottom pb-1 text-muted">{{post.created|timesince}} ago</p>
                 <p class="text-break text-dark">{{post.content}}</p>
                 {% if post.image %}
                     <img src="{{post.image.url}}" class="z-depth-2" alt="{{user.profile.name}}" style="width:100%;">
@@ -40,7 +43,22 @@
                 </div>
                 {% if post.num_comments == 0 %}
                 {% else %}
-                    View all {{post.num_comments}} comments
+                    <p class="commentbtn">all {{post.num_comments}} comments</p>
+                    <div class="overflow-auto commentbox" style="height:100px;">
+                        {% if post.comment_set.all %}
+                            {% for c in post.comment_set.all %}
+                            <div class="text-break py-1 d-flex">
+                                <img src="{{c.user.avatar.url}}" class="rounded-circle z-depth-2" style="width:5%;height:5%; display:inline-block;">
+                                <span class="ps-2"> {{c.user.name }} : {{c.body}}</span>
+                                {% if c.user == request.user.profile or c.post.author == request.user.profile %}
+                                    <a href="{% url 'com-update' c.pk%}" data-toggle="tooltip" data-placement="right" title="Update Comment" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-xs'></i></a>
+                                    <a href="{% url 'com-delete' c.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Comment" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-xs'></i></a>
+
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 {% endif %}
                 <form method="POST">
                     {% csrf_token %}
@@ -96,4 +114,16 @@
             like.style.display = "block";
         }
     };
+    $( document ).ready(function(){
+        let display = false
+        $(".commentbtn").click(function(){
+            if (display===false){
+                $(this).next(".commentbox").show("slow")
+                display=true
+            } else {
+                $(this).next(".commentbox").hide("slow")
+                display=false
+            }
+        });
+    }
 {% endblock %}
