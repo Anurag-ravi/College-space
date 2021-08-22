@@ -81,7 +81,6 @@ class PostDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):
     model = Post
     template_name = 'social/post_confirm_delete.html'
     success_url = reverse_lazy('connect-home')
-
     def test_func(self):
         post = self.get_object()
         if self.request.user.profile == post.author:
@@ -90,13 +89,22 @@ class PostDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):
     def get_object(self, *args,**kwargs):
         pk = self.kwargs.get('pk')
         obj = Post.objects.get(pk=pk)
-        return obj
+        if not obj.author.user == self.request.user:
+            messages.warning(self.request, 'You need to be post creator in order to delete it')
+        else:
+            return obj
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(UpdateView,LoginRequiredMixin,UserPassesTestMixin):
     model = Post
     form_class = PostForm
     template_name = 'social/post_update.html'
     success_url = reverse_lazy('self-posts')
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user.profile == post.author:
+            return True
+        return False
 
     def form_valid(self, form):
         profile = Profile.objects.get(user=self.request.user)
@@ -119,13 +127,23 @@ class CommentDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):
     def get_object(self, *args,**kwargs):
         pk = self.kwargs.get('pk')
         obj = Comment.objects.get(pk=pk)
-        return obj
+        if not obj.user == self.request.user.profile:
+            messages.warning(self.request, 'You need to be comment poster in order to delete it')
+        else:
+            return obj
 
-class CommentUpdateView(UpdateView):
+
+class CommentUpdateView(UpdateView,LoginRequiredMixin,UserPassesTestMixin):
     model = Comment
     form_class = CommentForm
     template_name = 'social/comment_update.html'
     success_url = reverse_lazy('connect-home')
+    
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user.profile == comment.user:
+            return True
+        return False
 
     def form_valid(self, form):
         profile = Profile.objects.get(user=self.request.user)

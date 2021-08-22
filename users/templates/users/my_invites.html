@@ -1,0 +1,36 @@
+{% extends "main/basic.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="overflow-auto container" style="height: 90vh;">
+{% if is_empty %}
+<h1 class="text-center">No Invitations at the moment</h1>
+{% else %}
+    {% for item in qs %}
+    <div class="container border rounded-3 my-2 col-8 bg-white">
+        <div class="row py-2">
+            <div class="col-3">
+                <img src="{{item.avatar.url}}" class="rounded-circle z-depth-2" alt="{{item.name}}" style="width:100%;height:100%;">
+            </div>
+            <div class="col-6">
+                <h3>{{item.name}}</h3>
+                <p>{{item.department}}</p>
+                <button class="btn btn-primary">See Profile</button>
+            </div>
+            <div class="col-3">
+                    <form action="{% url 'accept-invite'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="hidden" name="profile_pk" value="{{item.pk}}">
+                        <button class="btn btn-success my-2" type="submit">Accept</button>
+                    </form>
+                    <form action="{% url 'reject-invite'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="hidden" name="profile_pk" value="{{item.pk}}">
+                        <button class="btn btn-danger my-2" type="submit">Remove</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endif %}
+</div>
+{% endblock content %}

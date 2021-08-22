@@ -2,7 +2,7 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="row justify-content-around">
-    <div class="overflow-auto container col-6 border" style="height: 95vh;;">
+    <div class="overflow-auto container col-6 border" style="height: 95vh;">
         {% for post in posts %}
             <div class="container my-3 bg-light border ">
                 <div class="d-flex py-2 mb-2 border-bottom">
@@ -50,10 +50,11 @@
                             <div class="text-break py-1 d-flex">
                                 <img src="{{c.user.avatar.url}}" class="rounded-circle z-depth-2" style="width:5%;height:5%; display:inline-block;">
                                 <span class="ps-2"> {{c.user.name }} : {{c.body}}</span>
-                                {% if c.user == request.user.profile or c.post.author == request.user.profile %}
-                                    <a href="{% url 'com-update' c.pk%}" data-toggle="tooltip" data-placement="right" title="Update Comment" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-xs'></i></a>
-                                    <a href="{% url 'com-delete' c.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Comment" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-xs'></i></a>
-
+                                {% if c.user == request.user.profile %}
+                                    <a href="{% url 'com-update' c.pk%}" data-toggle="tooltip" data-placement="right" title="Update Comment" class="text-dark pb-1"><i class='bx bx-message-rounded-edit p-2 bx-xs'></i></a>
+                                    <a href="{% url 'com-delete' c.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Comment" class="text-dark pb-1"><i class='bx bx-message-rounded-x p-2 bx-xs'></i></a>
+                                {% elif c.post.author == request.user.profile %}
+                                    <a href="{% url 'com-delete' c.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Comment" class="text-dark pb-1"><i class='bx bx-message-rounded-x p-2 bx-xs'></i></a>
                                 {% endif %}
                             </div>
                             {% endfor %}

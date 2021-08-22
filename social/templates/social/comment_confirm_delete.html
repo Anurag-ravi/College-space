@@ -2,6 +2,7 @@
 {% block content %}
 <div class="row justify-content-around">
 <div class="border col-6 border-primary bg-light">
+{% if not messages %}
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -12,6 +13,7 @@
       <a class="btn btn-info" href="{% url 'connect-home'%}">Cancel</a>
     </div>
   </form>
+{% endif %}
 </div>
 </div>
 {% endblock content %}

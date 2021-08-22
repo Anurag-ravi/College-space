@@ -1,0 +1,9 @@
+{% extends "main/basic.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<ul>
+{% for items in qs %}
+    <li>{{items.name}}</li>
+{% endfor %}
+</ul>
+{% endblock content %}
