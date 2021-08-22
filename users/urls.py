@@ -4,6 +4,7 @@ from users import views as user_views
 urlpatterns = [
     path('',user_views.profile, name='profile'),
     path('profile_list/',user_views.ProfileListView.as_view(), name='profile-list'),
+    path('profile_list/<int:pk>',user_views.ProfileDetailView.as_view(), name='profile-detail'),
     path('invite_list/',user_views.invite_profile_list, name='invite-list'),
     path('my_invites/',user_views.invite_received_view, name='my-invites'),
     path('send_invite/',user_views.send_invitation, name='send-invites'),

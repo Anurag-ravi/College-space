@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from .forms import ProfileUpdateForm
 from .models import Relationship,Profile
 from datetime import datetime
@@ -74,6 +74,34 @@ def invite_profile_list(request):
         'qs':qs
     }
     return render(request,'users/invite_list.html',param)
+class ProfileDetailView(DetailView):
+    model = Profile
+    template_name='users/profile_detail.html'
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        profile = Profile.objects.get(pk=pk)
+        return profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(username__iexact=self.request.user)
+        profile = Profile.objects.get(user=user)
+        rel_r = Relationship.objects.filter(sender=profile)
+        rel_s = Relationship.objects.filter(receiver=profile)
+        rel_receiver = []
+        rel_sender = []
+        for item in rel_r:
+            rel_receiver.append(item.receiver.user)
+        for item in rel_s:
+            rel_sender.append(item.sender.user)
+        context["rel_receiver"]=rel_receiver
+        context["rel_sender"]=rel_sender
+        context["posts"] = self.get_object().get_all_post()
+        context["len_posts"] = True if len(self.get_object().get_all_post())>0 else False
+
+        return context
+
 
 class ProfileListView(ListView):
     model = Profile
@@ -125,3 +153,4 @@ def remove_friend(request):
         rel.delete()
         return redirect(request.META.get('HTTP_REFERER'))
     return redirect('profile-list')
+

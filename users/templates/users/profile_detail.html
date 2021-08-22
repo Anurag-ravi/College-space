@@ -1,13 +1,54 @@
-{% extends "social/basic.html" %}
+{% extends "main/basic.html" %}
 {% block content %}
 {% load crispy_forms_tags %}
 <div class="row justify-content-around">
-    <div class="overflow-auto container col-6 border" style="height: 95vh;">
+    <div class="boxed col-6 border border-1 border-primary bg-light" style="height:80vh;">
+        <div class="jumbotron p-4">
+        <img src="{{object.avatar.url}}" class="rounded-circle z-depth-2" alt="{{object.name}}" style="width:20%;height:20%;">
+        <h3 style="letter-spacing:2px;text-shadow:2px 2px #1d1b31;display: inline-block;" class="mb-2 float-left">{{object.name}}</h3>
+        {% if object.br %}
+            <div type="button" style="float:right;" class="badge rounded-pill bg-success" >BR</div>
+        {% endif %}
+        <hr>
+        <h5 class="my-2 text-wrap">Bio : {{object.bio}}</h5>
+        <hr>
+        <h5 class="my-2 text-wrap">Email : {{object.user.email}}</h5>
+        <h5 class="my-2">Roll No : {{object.roll}} </h5>
+        <h5 class="my-2">Batch : {{object.batch}} </h5>
+        <h5 class="my-2">Department : {{object.department}} </h5>
+        {% if object.section != '0' %}
+            <h5 class="my-2">Section : {{object.section}} </h5>
+        {% endif %}
+        <h5 class="my-2">No. of Friends : {{object.get_friends_no}} </h5>
+        <h5 class="my-2">No. of Posts : {{object.get_post_no}} </h5>
+        <div class="col-3">
+                {% if object.user not in rel_receiver and object.user not in rel_sender %}
+                    <form action="{% url 'send-invites'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                        <button class="btn btn-success" type="submit">Add Friend</button>
+                    </form>
+                {% endif %}
+                {% if object.user in rel_receiver and request.user not in object.friends.all %}
+                    <button class="btn btn-secondary" type="submit" disabled>Request Sent</button>
+                {% endif %}
+                {% if request.user in object.friends.all %}
+                    <form action="{% url 'remove-friend'%}" method="POST">
+                        {%csrf_token%}
+                        <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                        <button class="btn btn-danger" type="submit">Remove Friend</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if len_posts %}
+    <div class="col-5 bg-light">
         {% for post in posts %}
             <div class="container my-3 bg-light border ">
                 <div class="d-flex py-2 mb-2 border-bottom">
                     <img src="{{post.author.avatar.url}}" class="rounded-circle z-depth-2" alt="{{user.profile.name}}" style="width:12%;height:12%; display:inline-block;">
-                    <a href="{% url 'profile-detail' post.author.id%}" class="text-dark pt-2 ps-2 flex-grow-1"><h3>{{post.author.name}}</h3></a>
+                    <a href="#" class="text-dark pt-2 ps-2 flex-grow-1"><h3>{{post.author.name}}</h3></a>
                     {% if post.author == request.user.profile %}
                         <a href="{% url 'post-update' post.pk%}" data-toggle="tooltip" data-placement="right" title="Update Post" class="text-dark"><i class='bx bx-message-rounded-edit p-2 bx-sm'></i></a>
                         <a href="{% url 'post-delete' post.pk%}" data-toggle="tooltip" data-placement="right" title="Delete Post" class="text-dark"><i class='bx bx-message-rounded-x p-2 bx-sm'></i></a>
@@ -35,11 +76,6 @@
                     {% else %}
                         Liked by you and  {{post.num_likes_one}} others
                     {% endif %}
-                    {% comment %} <i id="like" onclick="Nolike()" class='bx bx-sm mx-2 bx-heart' style="display:block;"></i>
-                    <i id="liked" onclick="Like()" class='bx bx-sm mx-2 bxs-heart' style="display:none;"></i>
-                    <i class='bx bx-sm mx-2 bx-comment-add'></i>
-                    <i class='bx bx-sm mx-2 bx-share flex-grow-1'></i>
-                    <i class='bx bx-sm mx-2 bx-add-to-queue'></i> {% endcomment %}
                 </div>
                 {% if post.num_comments == 0 %}
                 {% else %}
@@ -72,59 +108,6 @@
             </div>
         {% endfor %}
     </div>
-    <div class="col-4 border" style="height:10%;">
-    <h5 class="text-center pt-3">Create New Post</h5>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-            <div class="border py-2 px-2">
-                {{ p_form|crispy }}
-            </div>
-            </fieldset>
-            <div class="form-group my-2">
-            <button class="btn btn-outline-info" name="p_submit" type="submit">Create</button>
-            </div>
-        </form>
-    </div>
+    {% endif %}
 </div>
-{% endblock content %}
-{% block script %}
-    const nolike = document.getElementById("like");
-    const like = document.getElementById("liked");
-    function Nolike () {
-        if (nolike.style.display !== "none") {
-            nolike.style.display = "none";
-        } else {
-            nolike.style.display = "block";
-        }
-        if (like.style.display !== "none") {
-            like.style.display = "none";
-        } else {
-            like.style.display = "block";
-        }
-    };
-    function Like () {
-        if (nolike.style.display === "none") {
-            nolike.style.display = "none";
-        } else {
-            nolike.style.display = "block";
-        }
-        if (like.style.display === "none") {
-            like.style.display = "none";
-        } else {
-            like.style.display = "block";
-        }
-    };
-    $( document ).ready(function(){
-        let display = false
-        $(".commentbtn").click(function(){
-            if (display===false){
-                $(this).next(".commentbox").show("slow")
-                display=true
-            } else {
-                $(this).next(".commentbox").hide("slow")
-                display=false
-            }
-        });
-    }
 {% endblock %}
