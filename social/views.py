@@ -6,6 +6,7 @@ from users.models import Profile
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView,DeleteView
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 # Create your views here.
 def index(request):
     posts = Post.objects.all()
@@ -75,6 +76,11 @@ def like_unlike_post(request):
             like.value = 'Like'
         post_obj.save()
         like.save()
+        data = {
+            'value': like.value,
+            'likes':post_obj.liked.all().count(),
+        }
+        # return JsonResponse(data,safe=False)
     return redirect('connect-home')
 
 class PostDeleteView(DeleteView,LoginRequiredMixin,UserPassesTestMixin):

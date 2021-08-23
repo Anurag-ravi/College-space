@@ -37,14 +37,13 @@
                     <i class='bx bx-search header__icon'></i>
                 </div> -->
                 {% if user.is_authenticated %}
-                  <a target="_blank" href="https://www.iitg.ac.in/"><img src="{% static 'img/profile.png' %}" alt="" class="header__img"></a>
+                  <a href={% url 'profile' %}><img src="{{request.user.profile.avatar.url}}" alt="" class="header__img"></a>
                 {% else %}
                   <a href="{% url 'login' %}" class="header__logo">Login</a>
                 {% endif %}
                 <div class="header__toggle">
                     <i class='bx bx-menu' id="header-toggle"></i>
-                </div>
-    
+                </div>    
             </div>
         </header>
 

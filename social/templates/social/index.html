@@ -19,27 +19,24 @@
                     <img src="{{post.image.url}}" class="z-depth-2" alt="{{user.profile.name}}" style="width:100%;">
                 {% endif %}
                 <div class="d-flex py-2 mb-2">
-                    <form class="me-2" action="{% url 'like_unlike'%}" method="POST">
+                    <form class="me-2 like-form" id='{{post.id}}' action="{% url 'like_unlike'%}" method="POST">
                     {% csrf_token %}
                         <input type="hidden" name="post_id" value={{post.id}}>
-                        <button class="btn btn-danger" type="submit">
+                        <button class="btn btn-danger like-btn-{{post.id}}" type="submit">
                         {% if profile not in post.liked.all %}
-                            <i class='bx bx-sm mx-2 bx-heart'></i>
+                            Like
                         {% else %}
-                            <i class='bx bx-sm mx-2 bxs-heart'></i>
+                            Unlike
                         {% endif %}
                         </button>
                     </form>
+                    <p class="like-count-{{post.id}}">
                     {% if profile not in post.liked.all %}
                     Liked by {{post.num_likes}} others
                     {% else %}
                         Liked by you and  {{post.num_likes_one}} others
                     {% endif %}
-                    {% comment %} <i id="like" onclick="Nolike()" class='bx bx-sm mx-2 bx-heart' style="display:block;"></i>
-                    <i id="liked" onclick="Like()" class='bx bx-sm mx-2 bxs-heart' style="display:none;"></i>
-                    <i class='bx bx-sm mx-2 bx-comment-add'></i>
-                    <i class='bx bx-sm mx-2 bx-share flex-grow-1'></i>
-                    <i class='bx bx-sm mx-2 bx-add-to-queue'></i> {% endcomment %}
+                    </p>
                 </div>
                 {% if post.num_comments == 0 %}
                 {% else %}
@@ -126,5 +123,33 @@
                 display=false
             }
         });
-    }
+        $('.like-form').submit(function(e){
+            e.preventDefault()
+            const post_id = $(this).attr('id')
+            const like_text = $(`.like-btn-${post_id}`).text()
+            const trim = $.trim(like_text)
+            const url = $(this).attr('action')
+            let res;
+            const likes = $(`.like-count-${post_id}`).text()
+            const trimcount = parseInt(likes)
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data:{
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    'post_id':post_id,
+                },
+                success: function(response){
+                    if(trim === 'Unlike'){
+                        $(`.like-btn-${post_id}`).text('Like')
+                        res = trimcount - 1
+                    } else {
+                        $(`.like-btn-${post_id}`).text('Unlike')
+                        res = trimcount + 1
+                    }
+                    $(`.like-count-${post_id}`).text(res)
+                },
+            });
+        });
+    });
 {% endblock %}
